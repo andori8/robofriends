@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import CardList from './CardList';
 import SearchBox from './SearchBox';
-import {robots} from './robots';
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      robots: robots,
+      robots: [],
       searchfield: ''
     }
+  }
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res => res.json())
+    .then(users => this.setState({ robots: users }))
   }
 
   handleChange= e => {
@@ -23,7 +28,7 @@ class App extends Component {
       return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
     })
     return (
-      <div className="tc">
+      <div className="f2 tc">
         <h1>Robofriends</h1>
         <SearchBox search={this.handleChange}/>
         <CardList robots={filteredRobots} />
